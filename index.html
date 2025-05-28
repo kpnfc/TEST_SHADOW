@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script>
-  var password = prompt("Enter the password:");
-  if(password !== "SHADOW") {
-    document.body.innerHTML = "<h1>Access Denied</h1>";
-  }
-</script>
 <head>
   <meta charset="UTF-8">
   <title>Atopic Dermatitis Healthcare</title>
@@ -25,61 +19,102 @@
       margin-top: 20px;
     }
   </style>
+  <script>
+    var password = prompt("Enter the password:");
+    if (password !== "SHADOW") {
+      document.body.innerHTML = "<h1>Access Denied</h1>";
+    }
+  </script>
 </head>
 <body>
-  <h1>Select Your Language</h1>
-  <select id="languageSelect" onchange="updatePDF()">
+  <!-- Section 1 -->
+  <h1>Treatment options according to patients' perspectives</h1>
+  <select id="languageSelect1" onchange="updatePDF1()">
     <option value="">-- Choose Country --</option>
     <option value="en">UK</option>
     <option value="fr">France</option>
     <option value="de">Deutschland</option>
   </select>
   <br>
-  <button onclick="downloadPDF()">Download PDF</button>
+  <button onclick="downloadPDF1()">Download PDF</button>
 
-  <!-- PDF Viewer -->
-  <iframe id="pdfViewer" src="" frameborder="0"></iframe>
+  <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+
+  <!-- Section 2 -->
+  <h1>Understanding Atopic Dermatitis</h1>
+  <select id="languageSelect2" onchange="updatePDF2()">
+    <option value="">-- Choose Country --</option>
+    <option value="en">UK</option>
+    <option value="fr">France</option>
+    <option value="de">Deutschland</option>
+  </select>
+  <br>
+  <button onclick="downloadPDF2()">Download PDF</button>
+
+  <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
 
   <script>
-    let currentPDF = '';
-
-    function updatePDF() {
-      const lang = document.getElementById('languageSelect').value;
-      if (!lang) {
-        document.getElementById('pdfViewer').src = '';
-        currentPDF = '';
-        return;
-      }
-
+    // Section 1 Logic
+    let currentPDF1 = '';
+    function updatePDF1() {
+      const lang = document.getElementById('languageSelect1').value;
       switch (lang) {
         case 'en':
-          currentPDF = 'SHADOW_v4_prep1 en-GB.pdf';
+          currentPDF1 = 'SHADOW_v4_prep1 en-GB.pdf';
           break;
         case 'fr':
-          currentPDF = 'SHADOW_v4_prep1.pdf';
+          currentPDF1 = 'SHADOW_v4_prep1.pdf';
           break;
         case 'de':
-          currentPDF = 'SHADOW_v4_prep1 de.pdf';
+          currentPDF1 = 'SHADOW_v4_prep1 de.pdf';
           break;
         default:
-          currentPDF = '';
+          currentPDF1 = '';
       }
-
-      if (currentPDF) {
-        document.getElementById('pdfViewer').src = currentPDF;
-      }
+      document.getElementById('pdfViewer1').src = currentPDF1 || '';
     }
 
-    function downloadPDF() {
-      if (!currentPDF) {
+    function downloadPDF1() {
+      if (!currentPDF1) {
         alert('Please select a language to download the PDF.');
         return;
       }
-
-      // Trigger download
       const link = document.createElement('a');
-      link.href = currentPDF;
-      link.download = currentPDF;
+      link.href = currentPDF1;
+      link.download = currentPDF1;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Section 2 Logic
+    let currentPDF2 = '';
+    function updatePDF2() {
+      const lang = document.getElementById('languageSelect2').value;
+      switch (lang) {
+        case 'en':
+          currentPDF2 = 'SHADOW_v4_prep2 en-GB.pdf';
+          break;
+        case 'fr':
+          currentPDF2 = 'SHADOW_v4_prep2.pdf';
+          break;
+        case 'de':
+          currentPDF2 = 'SHADOW_v4_prep2 de.pdf';
+          break;
+        default:
+          currentPDF2 = '';
+      }
+      document.getElementById('pdfViewer2').src = currentPDF2 || '';
+    }
+
+    function downloadPDF2() {
+      if (!currentPDF2) {
+        alert('Please select a language to download the PDF.');
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = currentPDF2;
+      link.download = currentPDF2;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
