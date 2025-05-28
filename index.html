@@ -1,20 +1,89 @@
 <!DOCTYPE html>
-<html>
-  <script>
+<html lang="en">
+    <script>
   var password = prompt("Enter the password:");
   if(password !== "SHADOW") {
     document.body.innerHTML = "<h1>Access Denied</h1>";
   }
 </script>
 <head>
-  <title>Informations générales sur la dermatite atopique</title>
+  <meta charset="UTF-8">
+  <title>Atopic Dermatitis Healthcare</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    select, button {
+      margin: 10px 0;
+      padding: 5px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Informations sur la dermatite atopique</h2>
-  <a href="SHADOW_v4_prep2.pdf" download>Télécharger</a>
-  <br><br>
-  <iframe src="SHADOW_v4_prep2.pdf" width="100%" height="600px">
-    Your browser does not support PDFs. <a href="SHADOW_v4_prep2.pdf">Télécharger</a>.
-  </iframe>
+  <h1>Select Your Language</h1>
+  <select id="languageSelect" onchange="updatePDF()">
+    <option value="">-- Choose Country --</option>
+    <option value="en">UK</option>
+    <option value="fr">France</option>
+    <option value="de">Deutschland</option>
+  </select>
+  <br>
+  <button onclick="downloadPDF()">Download PDF</button>
+
+  <!-- PDF Viewer -->
+  <iframe id="pdfViewer" src="" frameborder="0"></iframe>
+
+  <script>
+    let currentPDF = '';
+
+    function updatePDF() {
+      const lang = document.getElementById('languageSelect').value;
+      if (!lang) {
+        document.getElementById('pdfViewer').src = '';
+        currentPDF = '';
+        return;
+      }
+
+      switch (lang) {
+        case 'en':
+          currentPDF = 'SHADOW_v4_prep1 en-GB.pdf';
+          break;
+        case 'fr':
+          currentPDF = 'SHADOW_v4_prep1.pdf';
+          break;
+        case 'de':
+          currentPDF = 'SHADOW_v4_prep1 de.pdf';
+          break;
+        default:
+          currentPDF = '';
+      }
+
+      if (currentPDF) {
+        document.getElementById('pdfViewer').src = currentPDF;
+      }
+    }
+
+    function downloadPDF() {
+      if (!currentPDF) {
+        alert('Please select a language to download the PDF.');
+        return;
+      }
+
+      // Trigger download
+      const link = document.createElement('a');
+      link.href = currentPDF;
+      link.download = currentPDF;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
 </body>
 </html>
