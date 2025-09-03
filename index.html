@@ -16,224 +16,128 @@
       width: 100%;
       height: 600px;
       border: 1px solid #ccc;
+      border-radius: 8px;
       margin-top: 20px;
     }
-   /* Tabs container */
-.tabs {
-  display: flex;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 20px;
-}
-
-/* Common button styles */
-.tab-button {
-  flex: 1;
-  padding: 12px;
-  cursor: pointer;
-  border: none;
-  font-size: 16px;
-  transition: background 0.3s, color 0.3s;
-  color: #2f2f2f; /* neutral dark gray text */
-}
-
-/* Tab 1: Treatment Options (lavender mauve) */
-.tab-button:nth-child(1) {
-  background-color: #cdb4db;
-  color: #9482a0; /* custom text color */
-}
-.tab-button:nth-child(1).active {
-  background-color: #b39bc8; /* darker mauve */
-  color: #6f5a7d; /* darker shade of text */
-  font-weight: bold;
-}
-
-/* Tab 2: Understanding AD (soft sky blue) */
-.tab-button:nth-child(2) {
-  background-color: #a2d2ff;
-  color: #3a5f7c; /* complementary muted blue text */
-}
-.tab-button:nth-child(2).active {
-  background-color: #7bbdff; /* darker blue */
-  color: #1f3a50; /* darker text */
-  font-weight: bold;
-}
-
-/* Tab content (general) */
-.tab-content {
-  display: none;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  background-color: #fff; /* fallback */
-}
-
-/* Active tab content */
-.tab-content.active {
-  display: block;
-}
-
-/* Content background tint per tab */
-#section1.active {
-  background-color: #f2e9f7; /* very pale lavender tint */
-}
-
-#section2.active {
-  background-color: #eaf4ff; /* very pale blue tint */
-}
-    .highlight-tab1 {
-  color: #706279;  /* custom color for the highlighted words */
-  font-weight: bold; /* optional, makes it stand out more */
-}
-    .highlight-tab2 {
-  color: #3a5f7c;  /* custom color for the highlighted words */
-  font-weight: bold; /* optional, makes it stand out more */
-}
-#section1 iframe { background-color: #f2e9f7; }
-#section2 iframe { background-color: #eaf4ff; }
-iframe {
-  width: 100%;
-  height: 600px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-  </style>
-  <!-- very weak protection, but we don't need more -->
-  <script>
-  window.onload = function() {
-    var password = prompt("Enter the password:");
-    if (password !== "SHADOW") {
-      document.body.innerHTML = "<h1>Access Denied</h1>";
+    /* Tabs container */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 20px;
     }
-  };
-    function openTab(evt, tabId) {
-  // Hide all tab contents
-  const contents = document.getElementsByClassName("tab-content");
-  for (let i = 0; i < contents.length; i++) {
-    contents[i].classList.remove("active");
-  }
-
-  // Remove active from all tab buttons
-  const buttons = document.getElementsByClassName("tab-button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].classList.remove("active");
-  }
-
-  // Show the selected tab
-  document.getElementById(tabId).classList.add("active");
-
-  // Highlight the clicked button
-  evt.currentTarget.classList.add("active");
-}
-
-</script>
-</head>
-<body>
-  <!-- mandatory disclamer -->
-  <div style="font-size: 0.9em; color: #555; margin-bottom: 20px;">
-    <p>
-      Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. 
-      The first phase of this project was published in the British Journal of Dermatology (research letter available <a href="https://doi.org/10.1093/bjd/ljae329">here</a>). 
-      For more information or to reach out professionally, please contact me at <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>.
-    </p>
-  </div>
-  <br>
- <!-- Quick explaination -->
-    <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;">
-    <p>
-Dear patients,<br>
-      <br>
-      Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. 
-      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them. <br>
-      <br>
-      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey.
-</p>
-  </div>
- <br>
-  <!-- Tabs -->
-<div class="tabs">
-  <button class="tab-button active" onclick="openTab(event, 'section1')">What are my treatment options?</button>
-  <button class="tab-button" onclick="openTab(event, 'section2')">What should I also consider?</button>
-</div>
-
-<!-- Section 1 -->
-<div id="section1" class="tab-content active">
-  <h1>
-    Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
-  </h1>
-
-  <select id="languageSelect1" onchange="updatePDF1()">
-    <option value="">-- Choose Country --</option>
-    <option value="en">UK</option>
-    <option value="fr">France</option>
-    <option value="de">Deutschland</option>
-  </select>
-  <br>
-  <button onclick="downloadPDF1()">Download PDF</button>
-
-  <!-- PDF Viewer -->
-  <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
-</div>
-
-<!-- Section 2 -->
-<div id="section2" class="tab-content">
-  <h1>
-    Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
-  </h1>
-
-  <select id="languageSelect2" onchange="updatePDF2()">
-    <option value="">-- Choose Country --</option>
-    <option value="en">UK</option>
-    <option value="fr">France</option>
-    <option value="de">Deutschland</option>
-  </select>
-
-  <p>This guide covers symptoms, daily care routines, and how to manage flare-ups. Choose your country to download the full PDF, or browse the highlights below.</p>
-
-  <ul>
-    <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
-    <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
-    <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
-  </ul>
-
-  <br>
-  <button onclick="downloadPDF2()">Download PDF</button>
-
-  <!-- PDF Viewer -->
-  <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
-</div>
-
-  <p style="color: gray;">Please select a country to view the PDF.</p>
-</div>
-</div>
+    /* Common button styles */
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      transition: background 0.3s, color 0.3s;
+      color: #2f2f2f; /* neutral dark gray text */
+    }
+    /* Tab 1: Treatment Options (lavender mauve) */
+    .tab-button:nth-child(1) {
+      background-color: #cdb4db;
+      color: #9482a0; /* custom text color */
+    }
+    .tab-button:nth-child(1).active {
+      background-color: #b39bc8; /* darker mauve */
+      color: #6f5a7d; /* darker shade of text */
+      font-weight: bold;
+    }
+    /* Tab 2: Understanding AD (soft sky blue) */
+    .tab-button:nth-child(2) {
+      background-color: #a2d2ff;
+      color: #3a5f7c; /* complementary muted blue text */
+    }
+    .tab-button:nth-child(2).active {
+      background-color: #7bbdff; /* darker blue */
+      color: #1f3a50; /* darker text */
+      font-weight: bold;
+    }
+    /* Tab content (general) */
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background-color: #fff; /* fallback */
+    }
+    /* Active tab content */
+    .tab-content.active {
+      display: block;
+    }
+    /* Content background tint per tab */
+    #section1.active { background-color: #f2e9f7; /* very pale lavender tint */ }
+    #section2.active { background-color: #eaf4ff; /* very pale blue tint */ }
+    .highlight-tab1 {
+      color: #706279;  
+      font-weight: bold; 
+    }
+    .highlight-tab2 {
+      color: #3a5f7c;  
+      font-weight: bold; 
+    }
+    #section1 iframe { background-color: #f2e9f7; }
+    #section2 iframe { background-color: #eaf4ff; }
+  </style>
   <script>
-    // Section 1 Logic
+    // Very weak protection
+    window.onload = function() {
+      var password = prompt("Enter the password:");
+      if (password !== "SHADOW") {
+        document.body.innerHTML = "<h1>Access Denied</h1>";
+      }
+    };
+
+    // Tab logic with auto-update
+    function openTab(evt, tabId) {
+      const contents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < contents.length; i++) { contents[i].classList.remove("active"); }
+
+      const buttons = document.getElementsByClassName("tab-button");
+      for (let i = 0; i < buttons.length; i++) { buttons[i].classList.remove("active"); }
+
+      const selectedSection = document.getElementById(tabId);
+      selectedSection.classList.add("active");
+      evt.currentTarget.classList.add("active");
+
+      // Auto-update PDF for selected country
+      const lang = document.getElementById('languageSelectAll').value;
+      if(lang) updateAllPDFs();
+    }
+
+    // PDF variables
     let currentPDF1 = '';
-    function updatePDF1() {
-      const lang = document.getElementById('languageSelect1').value;
-      switch (lang) {
+    let currentPDF2 = '';
+
+    // Update both PDFs based on selected country
+    function updateAllPDFs() {
+      const lang = document.getElementById('languageSelectAll').value;
+      switch(lang) {
         case 'en':
           currentPDF1 = 'SHADOW_v4_prep1 en-GB.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2 en-GB.pdf';
           break;
         case 'fr':
           currentPDF1 = 'SHADOW_v4_prep1.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2.pdf';
           break;
         case 'de':
           currentPDF1 = 'SHADOW_v4_prep1 de.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2 de.pdf';
           break;
         default:
           currentPDF1 = '';
+          currentPDF2 = '';
       }
       document.getElementById('pdfViewer1').src = currentPDF1 || '';
+      document.getElementById('pdfViewer2').src = currentPDF2 || '';
     }
 
     function downloadPDF1() {
-      if (!currentPDF1) {
-        alert('Please select a language to download the PDF.');
-        return;
-      }
+      if (!currentPDF1) { alert('Please select a country to download the PDF.'); return; }
       const link = document.createElement('a');
       link.href = currentPDF1;
       link.download = currentPDF1;
@@ -242,31 +146,8 @@ Dear patients,<br>
       document.body.removeChild(link);
     }
 
-    // Section 2 Logic
-    let currentPDF2 = '';
-    function updatePDF2() {
-      const lang = document.getElementById('languageSelect2').value;
-      switch (lang) {
-        case 'en':
-          currentPDF2 = 'SHADOW_v4_prep2 en-GB.pdf';
-          break;
-        case 'fr':
-          currentPDF2 = 'SHADOW_v4_prep2.pdf';
-          break;
-        case 'de':
-          currentPDF2 = 'SHADOW_v4_prep2 de.pdf';
-          break;
-        default:
-          currentPDF2 = '';
-      }
-      document.getElementById('pdfViewer2').src = currentPDF2 || '';
-    }
-
     function downloadPDF2() {
-      if (!currentPDF2) {
-        alert('Please select a language to download the PDF.');
-        return;
-      }
+      if (!currentPDF2) { alert('Please select a country to download the PDF.'); return; }
       const link = document.createElement('a');
       link.href = currentPDF2;
       link.download = currentPDF2;
@@ -275,5 +156,70 @@ Dear patients,<br>
       document.body.removeChild(link);
     }
   </script>
+</head>
+<body>
+  <!-- mandatory disclaimer -->
+  <div style="font-size: 0.9em; color: #555; margin-bottom: 20px;">
+    <p>
+      Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. 
+      The first phase of this project was published in the British Journal of Dermatology (research letter available <a href="https://doi.org/10.1093/bjd/ljae329">here</a>). 
+      For more information or to reach out professionally, please contact me at <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>.
+    </p>
+  </div>
+
+  <!-- Quick explanation -->
+  <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;">
+    <p>
+      Dear patients,<br><br>
+      Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. 
+      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.
+      <br>
+      <br>
+      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey.
+    </p>
+  </div>
+
+  <!-- Single Country Selector -->
+  <div style="margin-bottom: 20px;">
+    <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
+    <select id="languageSelectAll" onchange="updateAllPDFs()">
+      <option value="">-- Select Country --</option>
+      <option value="en">UK</option>
+      <option value="fr">France</option>
+      <option value="de">Deutschland</option>
+    </select>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab(event, 'section1')">What are my treatment options?</button>
+    <button class="tab-button" onclick="openTab(event, 'section2')">What should I also consider?</button>
+  </div>
+
+  <!-- Section 1 -->
+  <div id="section1" class="tab-content active">
+    <h1>
+      Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
+    </h1>
+    <button onclick="downloadPDF1()">Download PDF</button>
+    <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+  </div>
+
+  <!-- Section 2 -->
+  <div id="section2" class="tab-content">
+    <h1>
+      Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
+    </h1>
+    <p>This guide covers symptoms, overall imdaily care routines, and how to manage flare-ups. You can visualize or download the full PDF, or browse the highlights below.</p>
+    <ul>
+      <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
+      <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
+      <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
+    </ul>
+    <button onclick="downloadPDF2()">Download PDF</button>
+    <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
+  </div>
+
 </body>
 </html>
+
