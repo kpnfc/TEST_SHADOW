@@ -19,6 +19,9 @@
       border-radius: 8px;
       margin-top: 20px;
     }
+    html {
+      scroll-behavior: smooth; /* smooth scrolling for anchor links */
+    }
     /* Tabs container */
     .tabs {
       display: flex;
@@ -33,44 +36,43 @@
       border: none;
       font-size: 16px;
       transition: background 0.3s, color 0.3s;
-      color: #2f2f2f; /* neutral dark gray text */
+      color: #2f2f2f;
     }
     /* Tab 1: Treatment Options (lavender mauve) */
     .tab-button:nth-child(1) {
       background-color: #cdb4db;
-      color: #9482a0; /* custom text color */
+      color: #9482a0;
     }
     .tab-button:nth-child(1).active {
-      background-color: #b39bc8; /* darker mauve */
-      color: #6f5a7d; /* darker shade of text */
+      background-color: #b39bc8;
+      color: #6f5a7d;
       font-weight: bold;
     }
     /* Tab 2: Understanding AD (soft sky blue) */
     .tab-button:nth-child(2) {
       background-color: #a2d2ff;
-      color: #3a5f7c; /* complementary muted blue text */
+      color: #3a5f7c;
     }
     .tab-button:nth-child(2).active {
-      background-color: #7bbdff; /* darker blue */
-      color: #1f3a50; /* darker text */
+      background-color: #7bbdff;
+      color: #1f3a50;
       font-weight: bold;
     }
-    /* Tab content (general) */
+    /* Tab content */
     .tab-content {
       display: none;
       padding: 20px;
       border: 1px solid #ccc;
       border-top: none;
       border-radius: 0 0 8px 8px;
-      background-color: #fff; /* fallback */
+      background-color: #fff;
     }
-    /* Active tab content */
     .tab-content.active {
       display: block;
     }
     /* Content background tint per tab */
-    #section1.active { background-color: #f2e9f7; /* very pale lavender tint */ }
-    #section2.active { background-color: #eaf4ff; /* very pale blue tint */ }
+    #section1.active { background-color: #f2e9f7; }
+    #section2.active { background-color: #eaf4ff; }
     .highlight-tab1 {
       color: #706279;  
       font-weight: bold; 
@@ -83,7 +85,6 @@
     #section2 iframe { background-color: #eaf4ff; }
   </style>
   <script>
-    // Very weak protection
     window.onload = function() {
       var password = prompt("Enter the password:");
       if (password !== "SHADOW") {
@@ -91,7 +92,7 @@
       }
     };
 
-    // Tab logic with auto-update
+    // Tab switching logic
     function openTab(evt, tabId) {
       const contents = document.getElementsByClassName("tab-content");
       for (let i = 0; i < contents.length; i++) { contents[i].classList.remove("active"); }
@@ -103,7 +104,7 @@
       selectedSection.classList.add("active");
       evt.currentTarget.classList.add("active");
 
-      // Auto-update PDF for selected country
+      // Update PDFs based on selected country
       const lang = document.getElementById('languageSelectAll').value;
       if(lang) updateAllPDFs();
     }
@@ -112,7 +113,7 @@
     let currentPDF1 = '';
     let currentPDF2 = '';
 
-    // Update both PDFs based on selected country
+    // Update both PDFs
     function updateAllPDFs() {
       const lang = document.getElementById('languageSelectAll').value;
       switch(lang) {
@@ -172,10 +173,9 @@
     <p>
       Dear patients,<br><br>
       Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. 
-      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.
-      <br>
-      <br>
-      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey.
+      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.<br><br>
+      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. <br><br>
+
     </p>
   </div>
 
@@ -201,8 +201,12 @@
     <h1>
       Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
     </h1>
-    <button onclick="downloadPDF1()">Download PDF</button>
-    <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+
+    <!-- Anchor target -->
+    <div id="pdf-section1">
+      <button onclick="downloadPDF1()">Download PDF</button>
+      <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+    </div>
   </div>
 
   <!-- Section 2 -->
@@ -210,16 +214,22 @@
     <h1>
       Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
     </h1>
-    <p>This guide covers symptoms, overall imdaily care routines, and how to manage flare-ups. You can visualize or download the full PDF, or browse the highlights below.</p>
+
+    <p>This guide covers symptoms, overall consequences, daily care routines, and how to manage flare-ups. You can browse the highlights below, or visualize/donwload the 
+      <a href="#pdf-section2">full PDF</a>.</p>
+
     <ul>
       <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
       <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
       <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
     </ul>
-    <button onclick="downloadPDF2()">Download PDF</button>
-    <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
-  </div>
 
+    <!-- Anchor target -->
+    <div id="pdf-section2">
+      <button onclick="downloadPDF2()">Download PDF</button>
+      <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
+    </div>
+  </div>
 </body>
 </html>
 
