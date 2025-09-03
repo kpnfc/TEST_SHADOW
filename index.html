@@ -19,15 +19,11 @@
       border-radius: 8px;
       margin-top: 20px;
     }
-    html {
-      scroll-behavior: smooth; /* smooth scrolling for anchor links */
-    }
+    html { scroll-behavior: smooth; }
+
     /* Tabs container */
-    .tabs {
-      display: flex;
-      border-bottom: 2px solid #ccc;
-      margin-bottom: 20px;
-    }
+    .tabs { display: flex; border-bottom: 2px solid #ccc; margin-bottom: 20px; }
+
     /* Common button styles */
     .tab-button {
       flex: 1;
@@ -38,100 +34,53 @@
       transition: background 0.3s, color 0.3s;
       color: #2f2f2f;
     }
-    /* Tab 1: Treatment Options (lavender mauve) */
-    .tab-button:nth-child(1) {
-      background-color: #cdb4db;
-      color: #9482a0;
-    }
-    .tab-button:nth-child(1).active {
-      background-color: #b39bc8;
-      color: #6f5a7d;
-      font-weight: bold;
-    }
-    /* Tab 2: Understanding AD (soft sky blue) */
-    .tab-button:nth-child(2) {
-      background-color: #a2d2ff;
-      color: #3a5f7c;
-    }
-    .tab-button:nth-child(2).active {
-      background-color: #7bbdff;
-      color: #1f3a50;
-      font-weight: bold;
-    }
-    /* Tab content */
-    .tab-content {
-      display: none;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      background-color: #fff;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    /* Content background tint per tab */
+    .tab-button:nth-child(1) { background-color: #cdb4db; color: #9482a0; }
+    .tab-button:nth-child(1).active { background-color: #b39bc8; color: #6f5a7d; font-weight: bold; }
+    .tab-button:nth-child(2) { background-color: #a2d2ff; color: #3a5f7c; }
+    .tab-button:nth-child(2).active { background-color: #7bbdff; color: #1f3a50; font-weight: bold; }
+
+    .tab-content { display: none; padding: 20px; border: 1px solid #ccc; border-top: none; border-radius: 0 0 8px 8px; background-color: #fff; }
+    .tab-content.active { display: block; }
     #section1.active { background-color: #f2e9f7; }
     #section2.active { background-color: #eaf4ff; }
-    .highlight-tab1 {
-      color: #706279;  
-      font-weight: bold; 
-    }
-    .highlight-tab2 {
-      color: #3a5f7c;  
-      font-weight: bold; 
-    }
+
+    .highlight-tab1 { color: #706279; font-weight: bold; }
+    .highlight-tab2 { color: #3a5f7c; font-weight: bold; }
     #section1 iframe { background-color: #f2e9f7; }
     #section2 iframe { background-color: #eaf4ff; }
+
+    /* Back to top link */
+    .back-to-top { text-align: right; margin-top: 5px; font-size: 0.9em; }
   </style>
   <script>
     window.onload = function() {
       var password = prompt("Enter the password:");
-      if (password !== "SHADOW") {
-        document.body.innerHTML = "<h1>Access Denied</h1>";
-      }
+      if (password !== "SHADOW") { document.body.innerHTML = "<h1>Access Denied</h1>"; }
     };
 
-    // Tab switching logic
     function openTab(evt, tabId) {
       const contents = document.getElementsByClassName("tab-content");
-      for (let i = 0; i < contents.length; i++) { contents[i].classList.remove("active"); }
-
+      for (let c of contents) c.classList.remove("active");
       const buttons = document.getElementsByClassName("tab-button");
-      for (let i = 0; i < buttons.length; i++) { buttons[i].classList.remove("active"); }
-
-      const selectedSection = document.getElementById(tabId);
-      selectedSection.classList.add("active");
+      for (let b of buttons) b.classList.remove("active");
+      document.getElementById(tabId).classList.add("active");
       evt.currentTarget.classList.add("active");
 
-      // Update PDFs based on selected country
+      // Update PDFs if country is selected
       const lang = document.getElementById('languageSelectAll').value;
       if(lang) updateAllPDFs();
     }
 
-    // PDF variables
     let currentPDF1 = '';
     let currentPDF2 = '';
 
-    // Update both PDFs
     function updateAllPDFs() {
       const lang = document.getElementById('languageSelectAll').value;
       switch(lang) {
-        case 'en':
-          currentPDF1 = 'SHADOW_v4_prep1 en-GB.pdf';
-          currentPDF2 = 'SHADOW_v4_prep2 en-GB.pdf';
-          break;
-        case 'fr':
-          currentPDF1 = 'SHADOW_v4_prep1.pdf';
-          currentPDF2 = 'SHADOW_v4_prep2.pdf';
-          break;
-        case 'de':
-          currentPDF1 = 'SHADOW_v4_prep1 de.pdf';
-          currentPDF2 = 'SHADOW_v4_prep2 de.pdf';
-          break;
-        default:
-          currentPDF1 = '';
-          currentPDF2 = '';
+        case 'en': currentPDF1='SHADOW_v4_prep1 en-GB.pdf'; currentPDF2='SHADOW_v4_prep2 en-GB.pdf'; break;
+        case 'fr': currentPDF1='SHADOW_v4_prep1.pdf'; currentPDF2='SHADOW_v4_prep2.pdf'; break;
+        case 'de': currentPDF1='SHADOW_v4_prep1 de.pdf'; currentPDF2='SHADOW_v4_prep2 de.pdf'; break;
+        default: currentPDF1=''; currentPDF2=''; 
       }
       document.getElementById('pdfViewer1').src = currentPDF1 || '';
       document.getElementById('pdfViewer2').src = currentPDF2 || '';
@@ -139,27 +88,17 @@
 
     function downloadPDF1() {
       if (!currentPDF1) { alert('Please select a country to download the PDF.'); return; }
-      const link = document.createElement('a');
-      link.href = currentPDF1;
-      link.download = currentPDF1;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const link=document.createElement('a'); link.href=currentPDF1; link.download=currentPDF1; document.body.appendChild(link); link.click(); document.body.removeChild(link);
     }
 
     function downloadPDF2() {
       if (!currentPDF2) { alert('Please select a country to download the PDF.'); return; }
-      const link = document.createElement('a');
-      link.href = currentPDF2;
-      link.download = currentPDF2;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const link=document.createElement('a'); link.href=currentPDF2; link.download=currentPDF2; document.body.appendChild(link); link.click(); document.body.removeChild(link);
     }
   </script>
 </head>
-<body>
-  <!-- mandatory disclaimer -->
+<body id="top">
+  <!-- Disclaimer -->
   <div style="font-size: 0.9em; color: #555; margin-bottom: 20px;">
     <p>
       Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. 
@@ -168,25 +107,26 @@
     </p>
   </div>
 
-  <!-- Quick explanation -->
+  <!-- Intro text -->
   <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;">
     <p>
       Dear patients,<br><br>
-      Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. 
-      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.<br><br>
-      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. <br><br>
-
+      Atopic Dermatitis (AD) is more common than you might think. Receiving a diagnosis can feel overwhelming, but there are many ways to manage your condition effectively. 
+      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.
+      <br><br>
+      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. 
+      <br><br>
     </p>
   </div>
 
-  <!-- Single Country Selector -->
+  <!-- Single country selector -->
   <div style="margin-bottom: 20px;">
     <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
     <select id="languageSelectAll" onchange="updateAllPDFs()">
       <option value="">-- Select Country --</option>
-      <option value="en">UK</option>
-      <option value="fr">France</option>
-      <option value="de">Deutschland</option>
+      <option value="en">🇬🇧 UK</option>
+      <option value="fr">🇫🇷 France</option>
+      <option value="de">🇩🇪 Deutschland</option>
     </select>
   </div>
 
@@ -198,25 +138,19 @@
 
   <!-- Section 1 -->
   <div id="section1" class="tab-content active">
-    <h1>
-      Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
-    </h1>
-
-    <!-- Anchor target -->
+    <h1>Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives</h1>
     <div id="pdf-section1">
       <button onclick="downloadPDF1()">Download PDF</button>
       <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+      <div class="back-to-top"><a href="#top">⬆ Back to top</a></div>
     </div>
   </div>
 
   <!-- Section 2 -->
   <div id="section2" class="tab-content">
-    <h1>
-      Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
-    </h1>
-
-    <p>This guide covers symptoms, overall consequences, daily care routines, and how to manage flare-ups. You can browse the highlights below, or visualize/donwload the 
-      <a href="#pdf-section2">full PDF</a>.</p>
+    <h1>Understanding my disease and its <span class="highlight-tab2">everyday implications</span></h1>
+    <p>This guide covers symptoms, daily care routines, and management strategies. You can browse the highlights below, or 
+      <a href="#pdf-section2">view/download the full PDF</a> directly.</p>
 
     <ul>
       <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
@@ -224,10 +158,10 @@
       <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
     </ul>
 
-    <!-- Anchor target -->
     <div id="pdf-section2">
       <button onclick="downloadPDF2()">Download PDF</button>
       <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
+      <div class="back-to-top"><a href="#top">⬆ Back to top</a></div>
     </div>
   </div>
 </body>
