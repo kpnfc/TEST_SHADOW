@@ -89,6 +89,15 @@
   color: #3a5f7c;  /* custom color for the highlighted words */
   font-weight: bold; /* optional, makes it stand out more */
 }
+#section1 iframe { background-color: #f2e9f7; }
+#section2 iframe { background-color: #eaf4ff; }
+iframe {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 20px;
+}
 
   </style>
   <!-- very weak protection, but we don't need more -->
@@ -143,15 +152,18 @@ Dear patients,<br>
 </p>
   </div>
  <br>
-  <div class="tabs">
+  <!-- Tabs -->
+<div class="tabs">
   <button class="tab-button active" onclick="openTab(event, 'section1')">What are my treatment options?</button>
   <button class="tab-button" onclick="openTab(event, 'section2')">What should I also consider?</button>
 </div>
- 
-  <!-- Section 1 -->
-  <div id="section1" class="tab-content active">
-  <h1>Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives</h1>
-  
+
+<!-- Section 1 -->
+<div id="section1" class="tab-content active">
+  <h1>
+    Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
+  </h1>
+
   <select id="languageSelect1" onchange="updatePDF1()">
     <option value="">-- Choose Country --</option>
     <option value="en">UK</option>
@@ -161,30 +173,38 @@ Dear patients,<br>
   <br>
   <button onclick="downloadPDF1()">Download PDF</button>
 
- <div class="pdf-container" id="pdfViewer1">
-  <p style="color: gray;">Please select a country to view the PDF.</p>
+  <!-- PDF Viewer -->
+  <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
 </div>
-    </div>
 
-  <!-- Section 2 -->
-  <div id="section2" class="tab-content">
-  <h1>Understanding my disease and its <span class="highlight-tab2">everyday implications</span></h1>
+<!-- Section 2 -->
+<div id="section2" class="tab-content">
+  <h1>
+    Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
+  </h1>
+
   <select id="languageSelect2" onchange="updatePDF2()">
     <option value="">-- Choose Country --</option>
     <option value="en">UK</option>
     <option value="fr">France</option>
     <option value="de">Deutschland</option>
   </select>
+
   <p>This guide covers symptoms, daily care routines, and how to manage flare-ups. Choose your country to download the full PDF, or browse the highlights below.</p>
+
   <ul>
     <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
     <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
     <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
   </ul>
+
   <br>
   <button onclick="downloadPDF2()">Download PDF</button>
 
-<div class="pdf-container" id="pdfViewer2">
+  <!-- PDF Viewer -->
+  <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
+</div>
+
   <p style="color: gray;">Please select a country to view the PDF.</p>
 </div>
 </div>
