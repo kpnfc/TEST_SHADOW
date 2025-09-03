@@ -18,6 +18,78 @@
       border: 1px solid #ccc;
       margin-top: 20px;
     }
+   /* Tabs container */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+/* Common button styles */
+.tab-button {
+  flex: 1;
+  padding: 12px;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  transition: background 0.3s, color 0.3s;
+  color: #2f2f2f; /* neutral dark gray text */
+}
+
+/* Tab 1: Treatment Options (lavender mauve) */
+.tab-button:nth-child(1) {
+  background-color: #cdb4db;
+  color: #9482a0; /* custom text color */
+}
+.tab-button:nth-child(1).active {
+  background-color: #b39bc8; /* darker mauve */
+  color: #6f5a7d; /* darker shade of text */
+  font-weight: bold;
+}
+
+/* Tab 2: Understanding AD (soft sky blue) */
+.tab-button:nth-child(2) {
+  background-color: #a2d2ff;
+  color: #3a5f7c; /* complementary muted blue text */
+}
+.tab-button:nth-child(2).active {
+  background-color: #7bbdff; /* darker blue */
+  color: #1f3a50; /* darker text */
+  font-weight: bold;
+}
+
+/* Tab content (general) */
+.tab-content {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background-color: #fff; /* fallback */
+}
+
+/* Active tab content */
+.tab-content.active {
+  display: block;
+}
+
+/* Content background tint per tab */
+#section1.active {
+  background-color: #f2e9f7; /* very pale lavender tint */
+}
+
+#section2.active {
+  background-color: #eaf4ff; /* very pale blue tint */
+}
+    .highlight-tab1 {
+  color: #9482a0;  /* custom color for the highlighted words */
+  font-weight: bold; /* optional, makes it stand out more */
+}
+    .highlight-tab2 {
+  color: #3a5f7c;  /* custom color for the highlighted words */
+  font-weight: bold; /* optional, makes it stand out more */
+}
+
   </style>
   <!-- very weak protection, but we don't need more -->
   <script>
@@ -27,6 +99,26 @@
       document.body.innerHTML = "<h1>Access Denied</h1>";
     }
   };
+    function openTab(evt, tabId) {
+  // Hide all tab contents
+  const contents = document.getElementsByClassName("tab-content");
+  for (let i = 0; i < contents.length; i++) {
+    contents[i].classList.remove("active");
+  }
+
+  // Remove active from all tab buttons
+  const buttons = document.getElementsByClassName("tab-button");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove("active");
+  }
+
+  // Show the selected tab
+  document.getElementById(tabId).classList.add("active");
+
+  // Highlight the clicked button
+  evt.currentTarget.classList.add("active");
+}
+
 </script>
 </head>
 <body>
@@ -38,8 +130,16 @@
       For more information or to reach out professionally, please contact me at <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>.
     </p>
   </div>
+
+  <div class="tabs">
+  <button class="tab-button active" onclick="openTab(event, 'section1')">Treatment Options</button>
+  <button class="tab-button" onclick="openTab(event, 'section2')">Understanding AD</button>
+</div>
+
   <!-- Section 1 -->
-  <h1>Treatment options according to patients' perspectives</h1>
+  <div id="section1" class="tab-content active">
+  <h1>Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives</h1>
+  
   <select id="languageSelect1" onchange="updatePDF1()">
     <option value="">-- Choose Country --</option>
     <option value="en">UK</option>
@@ -49,21 +149,33 @@
   <br>
   <button onclick="downloadPDF1()">Download PDF</button>
 
-  <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
+ <div class="pdf-container" id="pdfViewer1">
+  <p style="color: gray;">Please select a country to view the PDF.</p>
+</div>
+    </div>
 
   <!-- Section 2 -->
-  <h1>Understanding Atopic Dermatitis</h1>
+  <div id="section2" class="tab-content">
+  <h1>Understanding my disease and its <span class="highlight-tab2">everyday implications</span></h1>
   <select id="languageSelect2" onchange="updatePDF2()">
     <option value="">-- Choose Country --</option>
     <option value="en">UK</option>
     <option value="fr">France</option>
     <option value="de">Deutschland</option>
   </select>
+  <p>This guide covers symptoms, daily care routines, and how to manage flare-ups. Choose your country to download the full PDF, or browse the highlights below.</p>
+  <ul>
+    <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
+    <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
+    <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
+  </ul>
   <br>
   <button onclick="downloadPDF2()">Download PDF</button>
 
-  <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
-
+<div class="pdf-container" id="pdfViewer2">
+  <p style="color: gray;">Please select a country to view the PDF.</p>
+</div>
+</div>
   <script>
     // Section 1 Logic
     let currentPDF1 = '';
