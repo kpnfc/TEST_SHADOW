@@ -200,13 +200,16 @@
     <p> Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. The first phase of this project was published in the British Journal of Dermatology (research letter available <a href="https://doi.org/10.1093/bjd/ljae329">here</a>). For more information or to reach out professionally, please contact me at <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>. </p>
   </div>
 <br> <!-- Quick explaination --> <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;"> <p> Dear patients,<br> <br> Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them. <br> <br> We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. </p> </div> <br>
-  <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
-  <select id="languageSelectAll" onchange="updateAllPDFs(this.value)">
-    <option value="">-- Select Country --</option>
-    <option value="en">UK 🇬🇧</option>
-    <option value="fr">France 🇫🇷</option>
-    <option value="de">Deutschland 🇩🇪</option>
-  </select>
+  
+  <div style="margin-bottom: 20px;">
+    <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
+    <select id="languageSelectAll" onchange="updateAllPDFs()">
+      <option value="">-- Select Country --</option>
+      <option value="en" data-flag="🇬🇧">UK</option>
+      <option value="fr" data-flag="🇫🇷">France</option>
+      <option value="de" data-flag="🇩🇪">Deutschland</option>
+    </select>
+  </div>
 
   <div class="tabs" role="tablist">
     <button class="tab-button active" role="tab" aria-controls="section1" aria-selected="true" onclick="openTab(event,'section1')">What are my treatment options?</button>
