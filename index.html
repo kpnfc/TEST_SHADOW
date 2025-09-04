@@ -8,10 +8,6 @@
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    select, button {
-      margin: 10px 0;
-      padding: 5px;
-    }
     iframe {
       width: 100%;
       height: 600px;
@@ -19,11 +15,15 @@
       border-radius: 8px;
       margin-top: 20px;
     }
-    html { scroll-behavior: smooth; }
-
+    html {
+      scroll-behavior: smooth; /* smooth scrolling for anchor links */
+    }
     /* Tabs container */
-    .tabs { display: flex; border-bottom: 2px solid #ccc; margin-bottom: 20px; }
-
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 20px;
+    }
     /* Common button styles */
     .tab-button {
       flex: 1;
@@ -34,53 +34,158 @@
       transition: background 0.3s, color 0.3s;
       color: #2f2f2f;
     }
-    .tab-button:nth-child(1) { background-color: #cdb4db; color: #9482a0; }
-    .tab-button:nth-child(1).active { background-color: #b39bc8; color: #6f5a7d; font-weight: bold; }
-    .tab-button:nth-child(2) { background-color: #a2d2ff; color: #3a5f7c; }
-    .tab-button:nth-child(2).active { background-color: #7bbdff; color: #1f3a50; font-weight: bold; }
-
-    .tab-content { display: none; padding: 20px; border: 1px solid #ccc; border-top: none; border-radius: 0 0 8px 8px; background-color: #fff; }
-    .tab-content.active { display: block; }
+    /* Tab 1: Treatment Options (lavender mauve) */
+    .tab-button:nth-child(1) {
+      background-color: #cdb4db;
+      color: #9482a0;
+    }
+    .tab-button:nth-child(1).active {
+      background-color: #b39bc8;
+      color: #6f5a7d;
+      font-weight: bold;
+    }
+    /* Tab 2: Understanding AD (soft sky blue) */
+    .tab-button:nth-child(2) {
+      background-color: #a2d2ff;
+      color: #3a5f7c;
+    }
+    .tab-button:nth-child(2).active {
+      background-color: #7bbdff;
+      color: #1f3a50;
+      font-weight: bold;
+    }
+    /* Tab content */
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background-color: #fff;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    /* Content background tint per tab */
     #section1.active { background-color: #f2e9f7; }
     #section2.active { background-color: #eaf4ff; }
-
-    .highlight-tab1 { color: #706279; font-weight: bold; }
-    .highlight-tab2 { color: #3a5f7c; font-weight: bold; }
+    .highlight-tab1 {
+      color: #706279;  
+      font-weight: bold; 
+    }
+    .highlight-tab2 {
+      color: #3a5f7c;  
+      font-weight: bold; 
+    }
     #section1 iframe { background-color: #f2e9f7; }
     #section2 iframe { background-color: #eaf4ff; }
 
-    /* Back to top link */
-    .back-to-top { text-align: right; margin-top: 5px; font-size: 0.9em; }
+    /* Custom Select Dropdown with Flags */
+    .custom-select {
+      position: relative;
+      width: 220px;
+      user-select: none;
+      cursor: pointer;
+    }
+    .select-selected {
+      background-color: #eee;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .select-items {
+      position: absolute;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-top: none;
+      z-index: 99;
+      width: 100%;
+      border-radius: 0 0 4px 4px;
+    }
+    .select-items div {
+      padding: 8px;
+    }
+    .select-items div:hover {
+      background-color: #ddd;
+    }
+    .select-hide {
+      display: none;
+    }
+
+    /* Floating Back to Top Button */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 99;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+      display: none; /* hidden by default */
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      color: #fff;
+    }
+
+    /* Hover effect */
+    #backToTop:hover {
+      transform: scale(1.05);
+    }
   </style>
+  
   <script>
     window.onload = function() {
       var password = prompt("Enter the password:");
-      if (password !== "SHADOW") { document.body.innerHTML = "<h1>Access Denied</h1>"; }
+      if (password !== "SHADOW") {
+        document.body.innerHTML = "<h1>Access Denied</h1>";
+      }
     };
 
+    // Tab switching logic
     function openTab(evt, tabId) {
       const contents = document.getElementsByClassName("tab-content");
-      for (let c of contents) c.classList.remove("active");
+      for (let i = 0; i < contents.length; i++) { contents[i].classList.remove("active"); }
+
       const buttons = document.getElementsByClassName("tab-button");
-      for (let b of buttons) b.classList.remove("active");
-      document.getElementById(tabId).classList.add("active");
+      for (let i = 0; i < buttons.length; i++) { buttons[i].classList.remove("active"); }
+
+      const selectedSection = document.getElementById(tabId);
+      selectedSection.classList.add("active");
       evt.currentTarget.classList.add("active");
 
-      // Update PDFs if country is selected
-      const lang = document.getElementById('languageSelectAll').value;
-      if(lang) updateAllPDFs();
+      // Update PDFs if a country was already chosen
+      if(currentLang) updateAllPDFs(currentLang);
+
+      // Update back to top button color
+      updateBackToTopColor(tabId);
     }
 
+    // PDF variables
     let currentPDF1 = '';
     let currentPDF2 = '';
+    let currentLang = '';
 
-    function updateAllPDFs() {
-      const lang = document.getElementById('languageSelectAll').value;
+    // Update both PDFs
+    function updateAllPDFs(lang) {
+      currentLang = lang;
       switch(lang) {
-        case 'en': currentPDF1='SHADOW_v4_prep1 en-GB.pdf'; currentPDF2='SHADOW_v4_prep2 en-GB.pdf'; break;
-        case 'fr': currentPDF1='SHADOW_v4_prep1.pdf'; currentPDF2='SHADOW_v4_prep2.pdf'; break;
-        case 'de': currentPDF1='SHADOW_v4_prep1 de.pdf'; currentPDF2='SHADOW_v4_prep2 de.pdf'; break;
-        default: currentPDF1=''; currentPDF2=''; 
+        case 'en':
+          currentPDF1 = 'SHADOW_v4_prep1 en-GB.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2 en-GB.pdf';
+          break;
+        case 'fr':
+          currentPDF1 = 'SHADOW_v4_prep1.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2.pdf';
+          break;
+        case 'de':
+          currentPDF1 = 'SHADOW_v4_prep1 de.pdf';
+          currentPDF2 = 'SHADOW_v4_prep2 de.pdf';
+          break;
+        default:
+          currentPDF1 = '';
+          currentPDF2 = '';
       }
       document.getElementById('pdfViewer1').src = currentPDF1 || '';
       document.getElementById('pdfViewer2').src = currentPDF2 || '';
@@ -88,17 +193,90 @@
 
     function downloadPDF1() {
       if (!currentPDF1) { alert('Please select a country to download the PDF.'); return; }
-      const link=document.createElement('a'); link.href=currentPDF1; link.download=currentPDF1; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      const link = document.createElement('a');
+      link.href = currentPDF1;
+      link.download = currentPDF1;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     function downloadPDF2() {
       if (!currentPDF2) { alert('Please select a country to download the PDF.'); return; }
-      const link=document.createElement('a'); link.href=currentPDF2; link.download=currentPDF2; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      const link = document.createElement('a');
+      link.href = currentPDF2;
+      link.download = currentPDF2;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Custom select logic
+    document.addEventListener("DOMContentLoaded", function() {
+      const selectContainer = document.getElementById('languageSelectAll');
+      const selected = selectContainer.querySelector('.select-selected');
+      const items = selectContainer.querySelector('.select-items');
+
+      selected.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeAllSelect(this);
+        items.classList.toggle('select-hide');
+      });
+
+      items.querySelectorAll('div').forEach(option => {
+        option.addEventListener('click', function() {
+          selected.textContent = this.textContent;
+          items.classList.add('select-hide');
+          updateAllPDFs(this.getAttribute('data-lang'));
+        });
+      });
+
+      function closeAllSelect(elmnt) {
+        const allItems = document.querySelectorAll('.select-items');
+        const allSelected = document.querySelectorAll('.select-selected');
+        allItems.forEach((item, i) => {
+          if (elmnt !== allSelected[i]) item.classList.add('select-hide');
+        });
+      }
+      document.addEventListener('click', closeAllSelect);
+    });
+
+    // Show/hide Back to Top button
+    window.onscroll = function() {
+      const btn = document.getElementById("backToTop");
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+
+    // Smooth scroll back to top
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("backToTop").addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Default color for Section 1
+      updateBackToTopColor("section1");
+    });
+
+    // Adapt button color to active tab
+    function updateBackToTopColor(tabId) {
+      const btn = document.getElementById("backToTop");
+      if (tabId === "section1") {
+        btn.style.backgroundColor = "#cdb4db"; // lavender mauve
+        btn.style.color = "#fff";
+      } else if (tabId === "section2") {
+        btn.style.backgroundColor = "#a2d2ff"; // soft sky blue
+        btn.style.color = "#fff";
+      }
     }
   </script>
 </head>
-<body id="top">
-  <!-- Disclaimer -->
+  
+<body>
+  <!-- mandatory disclaimer -->
   <div style="font-size: 0.9em; color: #555; margin-bottom: 20px;">
     <p>
       Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. 
@@ -107,27 +285,27 @@
     </p>
   </div>
 
-  <!-- Intro text -->
+  <!-- Quick explanation -->
   <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;">
     <p>
       Dear patients,<br><br>
-      Atopic Dermatitis (AD) is more common than you might think. Receiving a diagnosis can feel overwhelming, but there are many ways to manage your condition effectively. 
-      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.
-      <br><br>
-      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. 
-      <br><br>
+      Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. 
+      To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them.<br><br>
+      We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. <br><br>
     </p>
   </div>
 
-  <!-- Single country selector -->
+  <!-- Single Country Selector with Flags -->
   <div style="margin-bottom: 20px;">
     <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
-    <select id="languageSelectAll" onchange="updateAllPDFs()">
-      <option value="">-- Select Country --</option>
-      <option value="en">🇬🇧 UK</option>
-      <option value="fr">🇫🇷 France</option>
-      <option value="de">🇩🇪 Deutschland</option>
-    </select>
+    <div class="custom-select" id="languageSelectAll">
+      <div class="select-selected">-- Select Country --</div>
+      <div class="select-items select-hide">
+        <div data-lang="en">🇬🇧 UK</div>
+        <div data-lang="fr">🇫🇷 France</div>
+        <div data-lang="de">🇩🇪 Deutschland</div>
+      </div>
+    </div>
   </div>
 
   <!-- Tabs -->
@@ -138,19 +316,25 @@
 
   <!-- Section 1 -->
   <div id="section1" class="tab-content active">
-    <h1>Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives</h1>
+    <h1>
+      Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives
+    </h1>
+
+    <!-- Anchor target -->
     <div id="pdf-section1">
       <button onclick="downloadPDF1()">Download PDF</button>
       <iframe id="pdfViewer1" src="" frameborder="0"></iframe>
-      <div class="back-to-top"><a href="#top">⬆ Back to top</a></div>
     </div>
   </div>
 
   <!-- Section 2 -->
   <div id="section2" class="tab-content">
-    <h1>Understanding my disease and its <span class="highlight-tab2">everyday implications</span></h1>
-    <p>This guide covers symptoms, daily care routines, and management strategies. You can browse the highlights below, or 
-      <a href="#pdf-section2">view/download the full PDF</a> directly.</p>
+    <h1>
+      Understanding my disease and its <span class="highlight-tab2">everyday implications</span>
+    </h1>
+
+    <p>This guide covers symptoms, overall consequences, daily care routines, and how to manage flare-ups. You can browse the highlights below, or visualize/download the 
+      <a href="#pdf-section2">full PDF</a>.</p>
 
     <ul>
       <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
@@ -158,12 +342,16 @@
       <li><strong><span class="highlight-tab2">Everyday prevention:</span></strong> Moisturizers, lifestyle adjustments.</li>
     </ul>
 
+    <!-- Anchor target -->
     <div id="pdf-section2">
       <button onclick="downloadPDF2()">Download PDF</button>
       <iframe id="pdfViewer2" src="" frameborder="0"></iframe>
-      <div class="back-to-top"><a href="#top">⬆ Back to top</a></div>
     </div>
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="backToTop" title="Back to top">↑ Top</button>
 </body>
 </html>
+
 
