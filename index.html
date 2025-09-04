@@ -47,6 +47,12 @@
     .side-effects .section-title { color:#e67e22; }
     .important .section-title { color:#7f8c8d; }
     .section-title .icon { font-size:1.2em; }
+
+    /* Visible focus styles */
+    button:focus, select:focus, a:focus {
+      outline: 3px solid #000;
+      outline-offset: 3px;
+    }
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -119,14 +125,52 @@
       updateOptionInfo();
     }
 
-    // Option info mapping
-    const optionInfoMapping = {
-      "choiceA1_choiceC1": {title:"Oral immunosuppressants", summary:"Sytemic treatments which lower immune response.", who:"Patients willing to make a daily effort to quickly calm symptoms.", constraints:["Tablets or capsules","Limited treatment period", "Medical surveillance","Restricted access"], benefits:["Rapid effectiveness","Visible skin improvement"], sideEffects:["Liver disorders, nausea, fatigue"], important:["Works only while treatment is taken."]},
-      "choiceA1_choiceC3": {title:"Topical immunomodulators", summary:"Maintains skin control with strong anti-inflammatory creams.", who:"Patients who need flexibility and portability.", constraints:["Oily ointment","Cosmetic overlay difficult","Limited access"], benefits:["Rapid relief","Caring for atopic skin"], sideEffects:["Irritant effect"], important:["Works only while treatment is taken."]},
-      "choiceA2_choiceC2": {title:"Phototherapy", summary:"Reproduces sun effect with safe exposure.", who:"Patients who prefer minimal systemic effects and can travel.", constraints:["Clinic visits","Limited treatment period","Travel required"], benefits:["Very rare systemic effects"], sideEffects:["Hyperpigmentation, redness, dryness"], important:["Only in dermatology practices with special equipment."]},
-      "choiceA2_choiceC3": {title:"Topical corticosteroids", summary:"Anti-inflammatory cortisone creams.", who:"Patients who prefer gentle, flexible treatments.", constraints:["Various textures and concentrations","Personalized routine needed"], benefits:["Rare systemic effects","Accessible","Caring for atopic skin"], sideEffects:["Skin fragility, stretch marks"], important:["Finding the best routine may take time."]},
-      "choiceA3_choiceC4": {title:"Biological therapies", summary:"Injectable therapy for long-term control.", who:"Patients willing to receive injections for stability.", constraints:["Subcutaneous injections every 2 weeks","Limited hospital access"], benefits:["Gradual reduction in corticosteroids","Long-term stabilization"], sideEffects:["Eye issues, joint pain, infections"], important:["Requires hospital dermatologist consultation."]},
-      "choiceA3_choiceC1": {title:"Anti-JAK treatment", summary:"Oral targeted therapy neutralizing inflammation messengers.", who:"Patients preferring daily tablets over injections.", constraints:["Daily tablets","Medical surveillance","Hospital prescription"], benefits:["Long-term symptom reduction","Possible dose spacing"], sideEffects:["Respiratory issues, infections"], important:["Hospital dermatologist required."]}
+    // Option info mapping 
+    const optionInfoMapping = { 
+      "choiceA1_choiceC1": {title:"Oral immunosuppressants", 
+                            summary:"Sytemic treatments which will lower the immune response.", 
+                            who:"Patients willing to make a daily effort to quickly calm their symptoms.", 
+                            constraints:["Tablets or capsules","Limited treatment period", "Compulsory medical surveillance", "Restricted access"],
+                            benefits:["Rapid effectiveness","Visible skin improvement"], 
+                            sideEffects:["Liver disorders, haematologic disorders, nausea, abdominal pain, fatigue"],
+                            important:["It will have a suspensory effect, which means that it last only while the treatment is being taken."]}, 
+      
+      "choiceA1_choiceC3": {title:"Topical immunomodulators", 
+                            summary:"Maintains skin control with the application of strong anti-inflammatory components.", 
+                            who:"Patients who need flexibility and portability.", 
+                            constraints:["Oily ointment", "Cosmetic products difficult to apply on top", "Limited access"], 
+                            benefits:["Relatively rapid effectiveness","Significant symptoms reduction", "Caring for atopic skin"], 
+                            sideEffects:["Irritant effect, possible intolerance to alcohol"], 
+                            important:["It will have a suspensory effect, which means that it last only while the treatment is being taken."]}, 
+      
+      "choiceA2_choiceC2": {title:"Phototherapy", 
+                            summary:"Some skin diseases can improve in summer, phototherapy tries to reproduce this effect via a safe exposure.", 
+                            who:"Patients who can travel for a brief treatment and prefer regular contacts with healthcare professionals.", 
+                            constraints:["Sessions in special cabins", "Limited treatment period", "Compulsatory travel", "May require some preparation"], 
+                            benefits:["Very rare adverse reactions", "Less medical vigilance"], 
+                            sideEffects:["Hyperpigmentation, sensation of heat, redness, skin dryness, sunburns"], 
+                            important:["Only available indermatological practices with a specific medical equipment."]}, 
+      
+      "choiceA2_choiceC3": {title:"Topical/local corticosteroids", summary:"Products containing the anti-inflammatory cortisone.", 
+                            who:"Patients who wish to relieve pain with a gentle solution.", 
+                            constraints:["Various textures, concentrations and residues", "Very personal rhythm, organization, and conditions of application"], 
+                            benefits:["Very rare adverse reactions","Less medical vigilance", "Easily accessible treatments", "Caring for atopic skin"], 
+                            sideEffects:["Fragility of the skin, stretch marks, hypopigmentation"], 
+                            important:["Finding the product and the routine that best suits your skin might takes some time."]}, 
+      
+      "choiceA3_choiceC4": {title:"Biological therapies", summary:"Injectable therapy for continuous eczema control by neutralizing the messenger of skin inflammation.", 
+                            who:"Patients focused on long-term eczema control and willing to receive injections.", 
+                            constraints:["Subcutaneous injections every 2 weeks","Limited access in some hospitals"], 
+                            benefits:["Reduction of symptoms severity over time","Gradual reduction in corticosteroid usage","Flexible dosing possibilities"], 
+                            sideEffects:["Eye problems, joint pain, infections, haematologic disorders, other skin problems"], 
+                            important:["You will need to consult a hospital dermatologist before starting treatment"]}, 
+      
+      "choiceA3_choiceC1": {title:"Anti-JAK treatment", summary:"Oral therapy for continuous eczema control by neutralizing the messenger of skin inflammation.", 
+                            who:"Patients willing to commit to daily care for long-term benefits but prefer avoiding injections.", 
+                            constraints:["Tablets to be taken once a day","Medical surveillance required","Limited access in some hospitals"], 
+                            benefits:["Reduction of symptoms severity over time","Gradual reduction in corticosteroid usage","Flexible dosing possibilities"], 
+                            sideEffects:["Respiratory issues, infections, headaches, other skin problems"], 
+                            important:["You will need to consult a hospital dermatologist before starting treatment"]} 
     };
 
     function updateOptionInfo(){
@@ -152,9 +196,9 @@
 </head>
 <body>
   <div style="font-size:0.9em;color:#555;margin-bottom:20px;">
-    <p>Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. For more info contact <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>.</p>
+    <p> Disclaimer: This website is part of an ongoing project by Henri-Mondor University Hospital (Créteil, France) to develop a Shared Decision Making tool for Atopic Dermatitis patients. The first phase of this project was published in the British Journal of Dermatology (research letter available <a href="https://doi.org/10.1093/bjd/ljae329">here</a>). For more information or to reach out professionally, please contact me at <a href="mailto:fanny.kpenou@edu.ehesp.fr">fanny.kpenou@edu.ehesp.fr</a>. </p>
   </div>
-
+<br> <!-- Quick explaination --> <div style="font-size: 1.1em; color: #030303; margin-bottom: 20px;"> <p> Dear patients,<br> <br> Atopic Dermatitis (AD) is more common than you might think. We understand that receiving a diagnosis can feel overwhelming, but there are many options to manage your condition effectively. To help you navigate your care, we spoke directly with patients about their experiences and what worked best for them. <br> <br> We’ve summarized these real-life insights here to support you and empower you to make choices that suit your healthcare journey. </p> </div> <br>
   <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
   <select id="languageSelectAll" onchange="updateAllPDFs(this.value)">
     <option value="">-- Select Country --</option>
@@ -194,7 +238,7 @@
       </li>
     </ul>
 
-    <div id="optionInfo">
+    <div id="optionInfo" role="region" aria-live="polite">
       <h2 id="optionTitle"></h2>
       <p id="optionSummary"></p>
       <div id="optionWho"><strong>Who is it for?</strong><p id="optionWhoText"></p></div>
