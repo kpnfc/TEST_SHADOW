@@ -33,25 +33,34 @@
     #optionInfo p { margin-bottom:12px; font-style:italic; color:#555; }
     #optionInfo div { margin-bottom:10px; }
     #optionInfo div#optionWho { padding:8px; background-color:#eee; border-radius:4px; }
+
+    /* Colored sections */
+    .constraints { border:2px solid #e74c3c; background:#fdecea; border-radius:6px; padding:10px; margin-bottom:12px; }
+    .benefits { border:2px solid #27ae60; background:#eafaf1; border-radius:6px; padding:10px; margin-bottom:12px; }
+    .side-effects { border:2px solid #e67e22; background:#fff5e6; border-radius:6px; padding:10px; margin-bottom:12px; }
+    .important { border:2px solid #7f8c8d; background:#f8f9f9; border-radius:6px; padding:10px; margin-bottom:12px; }
+
+    /* Section headers */
+    .section-title { font-weight:bold; font-size:1.1em; display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+    .constraints .section-title { color:#e74c3c; }
+    .benefits .section-title { color:#27ae60; }
+    .side-effects .section-title { color:#e67e22; }
+    .important .section-title { color:#7f8c8d; }
+    .section-title .icon { font-size:1.2em; }
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-
       // Password prompt
       var password = prompt("Enter the password:");
       if(password !== "SHADOW"){
         document.body.innerHTML = "<h1>Access Denied</h1>";
         return;
       }
-
-      // Initialize back to top button color
       updateBackToTopColor("section1");
-
-      // Initialize Choice C display
       updateChoiceC();
     });
 
-    // Tab switching with ARIA
+    // Tab switching
     function openTab(evt, tabId){
       const contents = document.getElementsByClassName("tab-content");
       const buttons = document.getElementsByClassName("tab-button");
@@ -64,9 +73,8 @@
     }
 
     // PDF logic
-    let currentPDF1='', currentPDF2='', currentLang='';
+    let currentPDF1='', currentPDF2='';
     function updateAllPDFs(lang){
-      currentLang=lang;
       switch(lang){
         case 'en': currentPDF1='SHADOW_v4_prep1 en-GB.pdf'; currentPDF2='SHADOW_v4_prep2 en-GB.pdf'; break;
         case 'fr': currentPDF1='SHADOW_v4_prep1.pdf'; currentPDF2='SHADOW_v4_prep2.pdf'; break;
@@ -79,7 +87,7 @@
     function downloadPDF1(){ if(!currentPDF1){alert('Please select a country.'); return;} const link=document.createElement('a'); link.href=currentPDF1; link.download=currentPDF1; link.click();}
     function downloadPDF2(){ if(!currentPDF2){alert('Please select a country.'); return;} const link=document.createElement('a'); link.href=currentPDF2; link.download=currentPDF2; link.click();}
 
-    // Back to top button
+    // Back to top
     window.onscroll = function(){
       const btn = document.getElementById("backToTop");
       if(document.body.scrollTop>300 || document.documentElement.scrollTop>300){btn.style.display="block";}else{btn.style.display="none";}
@@ -91,77 +99,34 @@
       else if(tabId==="section2"){btn.style.backgroundColor="#a2d2ff";}
     }
 
-    // Choice C logic based on A
+    // Choice C logic
     function updateChoiceC(){
       const choiceA = document.getElementById("FirstPriority").value;
       const choiceC = document.getElementById("YesICan");
       const prev = choiceC.value;
-
       const choiceCOptions = {
         choiceA1:["choiceC1","choiceC3"],
         choiceA2:["choiceC2","choiceC3"],
         choiceA3:["choiceC1","choiceC4"]
       };
-
       for(let i=0;i<choiceC.options.length;i++){
         const option = choiceC.options[i];
         if(option.value==="choiceC0"){ option.disabled=false; option.hidden=false; }
         else if(choiceCOptions[choiceA]?.includes(option.value)){ option.disabled=false; option.hidden=false; }
         else{ option.disabled=true; option.hidden=true; }
       }
-
       if(!choiceCOptions[choiceA]?.includes(prev)){ choiceC.value="choiceC0"; }
-
       updateOptionInfo();
     }
 
     // Option info mapping
     const optionInfoMapping = {
-      "choiceA1_choiceC1": {title:"Oral immunosuppressants", 
-                            summary:"Sytemic treatments which will lower the immune response.", 
-                            who:"Patients willing to make a daily effort to quickly calm their symptoms.", 
-                            constraints:["Tablets or capsules","Limited treatment period", "Compulsory medical surveillance", "Restricted access"], 
-                            benefits:["Rapid effectiveness","Visible skin improvement"], 
-                            sideEffects:["Liver disorders, haematologic disorders, nausea, abdominal pain, fatigue"], 
-                            important:["It will have a suspensory effect, which means that it last only while the treatment is being taken."]},
-     
-      "choiceA1_choiceC3": {title:"Topical immunomodulators", 
-                            summary:"Maintains skin control with the application of strong anti-inflammatory components.", 
-                            who:"Patients who need flexibility and portability.", 
-                            constraints:["Oily ointment", "Cosmetic products difficult to apply on top", "Limited access"], 
-                            benefits:["Relatively rapid effectiveness","Significant symptoms reduction", "Caring for atopic skin"], 
-                            sideEffects:["Irritant effect, possible intolerance to alcohol"], 
-                            important:["It will have a suspensory effect, which means that it last only while the treatment is being taken."]},
-      
-      "choiceA2_choiceC2": {title:"Phototherapy", summary:"Some skin diseases can improve in summer, phototherapy tries to reproduce this effect via a safe exposure.", 
-                            who:"Patients who can travel for a brief treatment and prefer regular contacts with healthcare professionals.", 
-                            constraints:["Sessions in special cabins", "Limited treatment period", "Compulsatory travel", "May require some preparation"], 
-                            benefits:["Very rare adverse reactions", "Less medical vigilance"], sideEffects:["Hyperpigmentation, sensation of heat, redness, skin dryness, sunburns"], 
-                            important:["Only available indermatological practices with a specific medical equipment."]},
-      
-      "choiceA2_choiceC3": {title:"Topical/local corticosteroids", 
-                            summary:"Products containing the anti-inflammatory cortisone.", 
-                            who:"Patients who wish to relieve pain with a gentle solution.", 
-                            constraints:["Various textures, concentrations and residues", "Very personal rhythm, organization, and conditions of application"], 
-                            benefits:["Very rare adverse reactions","Less medical vigilance", "Easily accessible treatments", "Caring for atopic skin"], 
-                            sideEffects:["Fragility of the skin, stretch marks, hypopigmentation"], 
-                            important:["Finding the product and the routine that best suits your skin might takes some time."]},
-      
-      "choiceA3_choiceC4": {title:"Biological therapies", 
-                            summary:"Injectable therapy for continuous eczema control by neutralizing the messenger of skin inflammation.", 
-                            who:"Patients focused on long-term eczema control and willing to receive injections.", 
-                            constraints:["Subcutaneous injections every 2 weeks","Limited access in some hospitals"], 
-                            benefits:["Reduction of symptoms severity over time","Gradual reduction in corticosteroid usage","Flexible dosing possibilities"], 
-                            sideEffects:["Eye problems, joint pain, infections, haematologic disorders, other skin problems"], 
-                            important:["You will need to consult a hospital dermatologist before starting treatment"]},
-      
-      "choiceA3_choiceC1": {title:"Anti-JAK treatment", 
-                            summary:"Oral therapy for continuous eczema control by neutralizing the messenger of skin inflammation.",
-                            who:"Patients willing to commit to daily care for long-term benefits but prefer avoiding injections.", 
-                            constraints:["Tablets to be taken once a day","Medical surveillance required","Limited access in some hospitals"], 
-                            benefits:["Reduction of symptoms severity over time","Gradual reduction in corticosteroid usage","Flexible dosing possibilities"], 
-                            sideEffects:["Respiratory issues, infections, headaches, other skin problems"], 
-                            important:["You will need to consult a hospital dermatologist before starting treatment"]}
+      "choiceA1_choiceC1": {title:"Oral immunosuppressants", summary:"Sytemic treatments which lower immune response.", who:"Patients willing to make a daily effort to quickly calm symptoms.", constraints:["Tablets or capsules","Limited treatment period", "Medical surveillance","Restricted access"], benefits:["Rapid effectiveness","Visible skin improvement"], sideEffects:["Liver disorders, nausea, fatigue"], important:["Works only while treatment is taken."]},
+      "choiceA1_choiceC3": {title:"Topical immunomodulators", summary:"Maintains skin control with strong anti-inflammatory creams.", who:"Patients who need flexibility and portability.", constraints:["Oily ointment","Cosmetic overlay difficult","Limited access"], benefits:["Rapid relief","Caring for atopic skin"], sideEffects:["Irritant effect"], important:["Works only while treatment is taken."]},
+      "choiceA2_choiceC2": {title:"Phototherapy", summary:"Reproduces sun effect with safe exposure.", who:"Patients who prefer minimal systemic effects and can travel.", constraints:["Clinic visits","Limited treatment period","Travel required"], benefits:["Very rare systemic effects"], sideEffects:["Hyperpigmentation, redness, dryness"], important:["Only in dermatology practices with special equipment."]},
+      "choiceA2_choiceC3": {title:"Topical corticosteroids", summary:"Anti-inflammatory cortisone creams.", who:"Patients who prefer gentle, flexible treatments.", constraints:["Various textures and concentrations","Personalized routine needed"], benefits:["Rare systemic effects","Accessible","Caring for atopic skin"], sideEffects:["Skin fragility, stretch marks"], important:["Finding the best routine may take time."]},
+      "choiceA3_choiceC4": {title:"Biological therapies", summary:"Injectable therapy for long-term control.", who:"Patients willing to receive injections for stability.", constraints:["Subcutaneous injections every 2 weeks","Limited hospital access"], benefits:["Gradual reduction in corticosteroids","Long-term stabilization"], sideEffects:["Eye issues, joint pain, infections"], important:["Requires hospital dermatologist consultation."]},
+      "choiceA3_choiceC1": {title:"Anti-JAK treatment", summary:"Oral targeted therapy neutralizing inflammation messengers.", who:"Patients preferring daily tablets over injections.", constraints:["Daily tablets","Medical surveillance","Hospital prescription"], benefits:["Long-term symptom reduction","Possible dose spacing"], sideEffects:["Respiratory issues, infections"], important:["Hospital dermatologist required."]}
     };
 
     function updateOptionInfo(){
@@ -169,10 +134,8 @@
       const choiceC = document.getElementById("YesICan").value;
       const key = choiceA+"_"+choiceC;
       const optionDiv = document.getElementById("optionInfo");
-
       if(optionInfoMapping[key]){
         const info = optionInfoMapping[key];
-
         document.getElementById("optionTitle").innerText = info.title;
         document.getElementById("optionSummary").innerText = info.summary;
         document.getElementById("optionWhoText").innerText = info.who;
@@ -180,14 +143,10 @@
         document.getElementById("optionBenefits").innerHTML = info.benefits.map(i=>`<li>${i}</li>`).join("");
         document.getElementById("optionSideEffects").innerHTML = info.sideEffects.map(i=>`<li>${i}</li>`).join("");
         document.getElementById("optionImportant").innerHTML = info.important.map(i=>`<li>${i}</li>`).join("");
-
         optionDiv.style.display = "block";
-
-        const colors = { choiceA1:"#ffd2f8", choiceA2:"#c5f6ff", choiceA3:"#c5e3ff" };
+        const colors = { choiceA1:"#fff6ff", choiceA2:"#e9fcff", choiceA3:"#dff1ff" };
         optionDiv.style.backgroundColor = colors[choiceA] || "#f9f9f9";
-      } else {
-        optionDiv.style.display = "none";
-      }
+      } else { optionDiv.style.display = "none"; }
     }
   </script>
 </head>
@@ -212,7 +171,7 @@
   <!-- Section 1 -->
   <div id="section1" class="tab-content active" role="tabpanel" aria-hidden="false">
     <h1>Treatment <span class="highlight-tab1">options</span> according to <span class="highlight-tab1">patients</span>' perspectives</h1>
-    <p>Treatment options are outlined according to patient priorities, with benefits and risks described from their perspective, alongside input from dermatologists. You can browse the highlights below, or visualize/download the <a href="#pdf-section1">full PDF</a>.
+    <p>Treatment options are outlined according to patient priorities, with benefits and risks described from their perspective, alongside input from dermatologists. You can browse the highlights below, or view/download the <a href="#pdf-section1">full PDF</a>.</p>
     <ul>
       <li>
         <label for="FirstPriority"><strong>What is my number one priority?</strong></label>
@@ -239,17 +198,22 @@
       <h2 id="optionTitle"></h2>
       <p id="optionSummary"></p>
       <div id="optionWho"><strong>Who is it for?</strong><p id="optionWhoText"></p></div>
-      <div>
-        <strong>Constraints:</strong><ul id="optionConstraints"></ul>
+      
+      <div class="constraints">
+        <div class="section-title"><span class="icon">❗</span>Constraints:</div>
+        <ul id="optionConstraints"></ul>
       </div>
-      <div>
-        <strong>Benefits:</strong><ul id="optionBenefits"></ul>
+      <div class="benefits">
+        <div class="section-title"><span class="icon">✅</span>Benefits:</div>
+        <ul id="optionBenefits"></ul>
       </div>
-      <div>
-        <strong>Possible side effects:</strong><ul id="optionSideEffects"></ul>
+      <div class="side-effects">
+        <div class="section-title"><span class="icon">⚠️</span>Possible side effects:</div>
+        <ul id="optionSideEffects"></ul>
       </div>
-      <div>
-        <strong>Important information:</strong><ul id="optionImportant"></ul>
+      <div class="important">
+        <div class="section-title"><span class="icon">ℹ️</span>Important information:</div>
+        <ul id="optionImportant"></ul>
       </div>
     </div>
 
@@ -263,7 +227,6 @@
   <div id="section2" class="tab-content" role="tabpanel" aria-hidden="true">
     <h1>Understanding my disease and its <span class="highlight-tab2">everyday implications</span></h1>
     <p>This guide covers symptoms, overall consequences, daily care routines, and how to manage flare-ups. You can browse the highlights below, or view/download the <a href="#pdf-section2">full PDF</a>.</p>
-    
     <ul>
       <li><strong><span class="highlight-tab2">What is AD?</span></strong> A chronic skin condition causing inflammation and itching.</li>
       <li><strong><span class="highlight-tab2">Common triggers:</span></strong> Cold, stress, allergens, irritants.</li>
