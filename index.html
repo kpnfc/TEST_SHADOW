@@ -203,7 +203,7 @@
   
   <div style="margin-bottom: 20px;">
     <label for="languageSelectAll" style="font-weight:bold;">Choose your country:</label>
-    <select id="languageSelectAll" onchange="updateAllPDFs()">
+    <select id="languageSelectAll" onchange="updateAllPDFs(this.value)">
       <option value="">-- Select Country --</option>
       <option value="en" data-flag="🇬🇧">UK</option>
       <option value="fr" data-flag="🇫🇷">France</option>
